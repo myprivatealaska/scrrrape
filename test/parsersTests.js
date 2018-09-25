@@ -1,4 +1,4 @@
-const mediumParser = require("../services/parsers/medium");
+const mediumMatcher = require("../services/parsers/medium");
 const fs = require("fs");
 
 
@@ -9,7 +9,7 @@ describe("Parsers tests:", () => {
         it('should return sentences with specified keyword', () => {
             const keyword = "persevere";
             const stub = fs.readFileSync(__dirname + "/stub.html");
-            const results = mediumParser(stub);
+            const results = mediumMatcher(keyword, stub);
             console.log(results);
         })
     })
