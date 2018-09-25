@@ -1,0 +1,16 @@
+{
+  "name": "scrrrape",
+  "version": "1.0.0",
+  "dependencies": {
+    "build-url": "^1.2.0",
+    "dotenv": "^6.0.0",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.2",
+    "cheerio": "^1.0.0-rc.2"
+  },
+  "devDependencies": {
+    "url-parse": "^1.4.3",
+    "mocha": "^5.2.0",
+    "nock": "^10.0.0"
+  }
+}
