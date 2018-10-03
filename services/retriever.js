@@ -15,7 +15,10 @@ class Retriever{
     }
 
     getPage(url){
-        return request(url)
+        return request(url).catch(function (err) {
+            console.log(err);
+            return err;
+        })
     }
 
 }

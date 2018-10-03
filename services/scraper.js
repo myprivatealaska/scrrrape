@@ -1,5 +1,6 @@
 const Retriever = require("./retriever")
-const mediumParser = require("./parsers/medium")
+const parse = require("./parsers/medium")
+const findMatchedSentences = require("./matcher")
 
 class Scraper{
 
@@ -7,30 +8,24 @@ class Scraper{
         this.retriever = new Retriever()
     }
 
-    findSentencesOnMedium(keyword){
+    async findSentencesOnMedium(keyword){
         let sentences = [];
 
-        this.retriever.searchMedium(keyword)
-            .then(data => {
-                if(data.items.length == 0){
-                    console.log("no search results")
-                    return;
-                }
+        let data = await this.retriever.searchMedium(keyword);
 
-                data.items.forEach(({link}) => {
-                    this.retriever.getPage(link)
-                                  .then(page => sentences.push(mediumParser(page)))
-                                  .catch(err => console.log(err));
-                })
+        if(data.items.length == 0){
+            console.log("no search results")
+            return sentences;
+        }
 
-                console.log(sentences);
+        await Promise.all(data.items.map(async ({link}) => {
+            let page =  await this.retriever.getPage(link);
+            let text = await parse(page);
+            let matches = await findMatchedSentences(keyword, text);
+            sentences.push(matches);
+        }));
 
-
-            })
-            .catch(err => {
-                console.log(err)
-            })
-
+        return sentences;
     }
 }
 module.exports = Scraper;
